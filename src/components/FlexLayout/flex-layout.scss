@@ -1,0 +1,102 @@
+@use "sass:color";
+
+$tab-colors: (
+  "red": #ef4444,
+  "orange": #f97316,
+  "yellow": #eab308,
+  "green": #22c55e,
+  "blue": #3b82f6,
+  "purple": #a855f7,
+  "gray": #6b7280,
+);
+
+.flex-layout {
+  .flexlayout__layout {
+    --color-text: var(--text-h);
+    --color-background: var(--bg);
+    --color-base: var(--bg);
+    --color-1: #f4f3f6;
+    --color-2: #ebe9ee;
+    --color-3: var(--border);
+    --color-4: #d6d4da;
+    --color-5: #b9b6c0;
+    --color-6: #9b97a5;
+
+    --color-drag1: var(--accent);
+    --color-drag2: var(--accent);
+    --color-drag1-background: var(--accent-bg);
+    --color-drag2-background: var(--accent-bg);
+
+    --font-family: var(--sans);
+
+    --color-overflow: var(--text);
+    --color-icon: var(--text);
+
+    --color-tabset-background: var(--code-bg);
+    --color-tabset-background-selected: var(--bg);
+    --color-tabset-background-maximized: var(--bg);
+    --color-tabset-divider-line: var(--border);
+
+    --color-border-tab-content: var(--bg);
+    --color-border-background: var(--code-bg);
+    --color-border-divider-line: var(--border);
+
+    --color-tab-content: var(--bg);
+    --color-tab-selected: var(--text-h);
+    --color-tab-selected-background: var(--bg);
+    --color-tab-unselected: var(--text);
+    --color-tab-unselected-background: transparent;
+
+    --color-border-tab-selected: var(--accent);
+    --color-border-tab-selected-background: var(--accent-bg);
+    --color-border-tab-unselected: var(--text);
+    --color-border-tab-unselected-background: transparent;
+  }
+
+  .flexlayout__tabset {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .flexlayout__tabset_tabbar_outer {
+    border-radius: 8px 8px 0 0;
+  }
+
+  .flexlayout__tab_button {
+    border-radius: 6px;
+    margin: 2px;
+  }
+
+  .flexlayout__tab_button--selected {
+    box-shadow: var(--shadow);
+  }
+
+  .flexlayout__border {
+    border-radius: 8px;
+  }
+
+  .flexlayout__border_button {
+    border-radius: 6px;
+  }
+
+  .flexlayout__tab {
+    border-radius: 0 0 8px 8px;
+  }
+
+  @each $name, $hex in $tab-colors {
+    .flexlayout__tab_button.tab-color-#{$name} {
+      border-bottom: 3px solid rgba($hex, 0.35);
+      color: color.adjust($hex, $lightness: -10%);
+
+      &.flexlayout__tab_button--selected {
+        background-color: rgba($hex, 0.14);
+        border-bottom-color: $hex;
+        color: color.adjust($hex, $lightness: -15%);
+      }
+
+      &.flexlayout__tab_button--unselected:hover {
+        background-color: rgba($hex, 0.08);
+      }
+    }
+  }
+}
