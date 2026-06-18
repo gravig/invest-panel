@@ -24,6 +24,7 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@panels/*": ["./src/panels/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@src/*": ["./src/*"]
     }
   },

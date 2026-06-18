@@ -11,6 +11,7 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "src/components"),
       "@views": path.resolve(__dirname, "src/views"),
       "@panels": path.resolve(__dirname, "src/panels"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
       "@src": path.resolve(__dirname, "src"),
     },
   },

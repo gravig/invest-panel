@@ -1,0 +1,20 @@
+.sidebar {
+  --width: 350px;
+
+  min-width: var(--width);
+  max-width: var(--width);
+  overflow: hidden;
+  transition:
+    min-width 0.3s ease,
+    max-width 0.3s ease;
+
+  &.sidebar--collapsed {
+    min-width: 36px;
+    max-width: 36px;
+  }
+
+  .sidebar__list {
+    min-width: var(--width);
+    max-width: var(--width);
+  }
+}

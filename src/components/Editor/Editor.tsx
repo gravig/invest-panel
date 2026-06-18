@@ -1,15 +1,28 @@
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { ChartBlock } from "./ChartBlock/ChartBlock";
+import { SlashCommand } from "./SlashCommand/SlashCommand";
 import { StaticToolbar } from "./StaticToolbar";
 import "./editor.scss";
 
-const extensions = [StarterKit, TextStyleKit];
+const extensions = [StarterKit, TextStyleKit, SlashCommand, ChartBlock];
 
-export const Editor = () => {
+type EditorProps = {
+  content?: string;
+  onChange?: (content: string) => void;
+};
+
+export const Editor = ({ content, onChange }: EditorProps) => {
   const editor = useEditor({
     extensions,
-    content: "",
+    content: content || "",
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      if (onChange) {
+        onChange(html);
+      }
+    },
   });
 
   return (

@@ -86,6 +86,7 @@ $tab-colors: (
   @each $name, $hex in $tab-colors {
     .flexlayout__tab_button.tab-color-#{$name} {
       border-bottom: 3px solid rgba($hex, 0.35);
+      outline: 1px solid rgba($hex, 1);
       color: color.adjust($hex, $lightness: -10%);
 
       &.flexlayout__tab_button--selected {
