@@ -15,7 +15,6 @@ const EMPTY_FORM = {
 export const AddNewsDrawer = ({
   open,
   onClose,
-  onSuccess,
 }: {
   open: boolean;
   onClose: () => void;
@@ -23,7 +22,7 @@ export const AddNewsDrawer = ({
 }) => {
   const [form, setForm] = React.useState(EMPTY_FORM);
   const [labels, setLabels] = React.useState<NewsLabel[]>([]);
-  const [saving, setSaving] = React.useState(false);
+  const [saving] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const { create } = useNewsService<typeof useNews>({ lazy: true });
 
@@ -53,19 +52,11 @@ export const AddNewsDrawer = ({
   const addLabel = () => setLabels((prev) => [...prev, { key: "", value: "" }]);
 
   const updateLabel = (idx: number, field: "key" | "value", val: string) =>
-    setLabels((prev) =>
-      prev.map((l, i) => (i === idx ? { ...l, [field]: val } : l)),
-    );
+    setLabels((prev) => prev.map((l, i) => (i === idx ? { ...l, [field]: val } : l)));
 
-  const removeLabel = (idx: number) =>
-    setLabels((prev) => prev.filter((_, i) => i !== idx));
+  const removeLabel = (idx: number) => setLabels((prev) => prev.filter((_, i) => i !== idx));
 
-  const field = (
-    id: keyof typeof EMPTY_FORM,
-    label: string,
-    required = false,
-    type = "text",
-  ) => (
+  const field = (id: keyof typeof EMPTY_FORM, label: string, required = false, type = "text") => (
     <div className="flex flex-col gap-1">
       <label htmlFor={id} className="text-xs font-medium text-gray-600">
         {label}
@@ -84,9 +75,7 @@ export const AddNewsDrawer = ({
 
   return (
     <>
-      {open && (
-        <div className="fixed inset-0 bg-black/20 z-10" onClick={handleClose} />
-      )}
+      {open && <div className="fixed inset-0 z-10 bg-black/20" onClick={handleClose} />}
       <div
         className={clsx(
           "fixed top-0 right-0 h-full w-[28rem] bg-white shadow-2xl z-20 flex flex-col transition-transform duration-200",
@@ -94,10 +83,10 @@ export const AddNewsDrawer = ({
         )}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b">
-          <h2 className="font-semibold text-base">Add News</h2>
+          <h2 className="text-base font-semibold">Add News</h2>
           <button
             onClick={handleClose}
-            className="text-gray-400 hover:text-gray-700 cursor-pointer text-lg leading-none"
+            className="text-lg leading-none text-gray-400 cursor-pointer hover:text-gray-700"
           >
             ✕
           </button>
@@ -105,7 +94,7 @@ export const AddNewsDrawer = ({
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 px-5 py-4 overflow-auto flex-1"
+          className="flex flex-col flex-1 gap-4 px-5 py-4 overflow-auto"
         >
           {field("title", "Title", true)}
           {field("url", "URL", true)}
@@ -119,29 +108,29 @@ export const AddNewsDrawer = ({
               <button
                 type="button"
                 onClick={addLabel}
-                className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer"
+                className="text-xs text-blue-600 cursor-pointer hover:text-blue-800"
               >
                 + Add label
               </button>
             </div>
             {labels.map((label, idx) => (
-              <div key={idx} className="flex gap-2 items-center">
+              <div key={idx} className="flex items-center gap-2">
                 <input
                   placeholder="key"
                   value={label.key}
                   onChange={(e) => updateLabel(idx, "key", e.target.value)}
-                  className="border rounded px-2 py-1 text-sm flex-1 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  className="flex-1 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
                 />
                 <input
                   placeholder="value"
                   value={label.value}
                   onChange={(e) => updateLabel(idx, "value", e.target.value)}
-                  className="border rounded px-2 py-1 text-sm flex-1 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  className="flex-1 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
                 />
                 <button
                   type="button"
                   onClick={() => removeLabel(idx)}
-                  className="text-gray-400 hover:text-red-500 cursor-pointer text-sm"
+                  className="text-sm text-gray-400 cursor-pointer hover:text-red-500"
                 >
                   ✕
                 </button>
@@ -150,23 +139,23 @@ export const AddNewsDrawer = ({
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+            <p className="px-3 py-2 text-sm text-red-600 border border-red-200 rounded bg-red-50">
               {error}
             </p>
           )}
 
-          <div className="flex gap-2 mt-auto pt-2">
+          <div className="flex gap-2 pt-2 mt-auto">
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 border rounded px-3 py-2 text-sm hover:bg-gray-50 cursor-pointer"
+              className="flex-1 px-3 py-2 text-sm border rounded cursor-pointer hover:bg-gray-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 bg-blue-600 text-white rounded px-3 py-2 text-sm hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
+              className="flex-1 px-3 py-2 text-sm text-white bg-blue-600 rounded cursor-pointer hover:bg-blue-700 disabled:opacity-50"
             >
               {saving ? "Saving…" : "Add News"}
             </button>
