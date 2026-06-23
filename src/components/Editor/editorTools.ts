@@ -212,4 +212,11 @@ export const editorTools: EditorTool[] = [
     group: "insert",
     run: (editor) => editor.chain().focus().insertChart().run(),
   },
+  {
+    id: "explore",
+    label: "🔍",
+    title: "Explore",
+    group: "insert",
+    run: (editor) => editor.chain().focus().insertExplore().run(),
+  },
 ];

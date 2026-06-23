@@ -1,8 +1,17 @@
-import type { IDocument } from "@panels/Notebook";
+import type { NoteModel } from "@src/server/model/note.model";
 
-export interface IUseNotebookService {
-  documents: IDocument[];
-  update: (id: string, document: Omit<IDocument, "id">) => Promise<void>;
-  create: (document: Omit<IDocument, "id">) => Promise<void>;
-  remove: (id: string) => Promise<void>;
+export type UpdateFunction = (
+  id: string,
+  note: Pick<NoteModel, "content" | "title">,
+) => Promise<void>;
+export type CreateFunction = (
+  note: Pick<NoteModel, "content" | "title">,
+) => Promise<void>;
+export type RemoveFunction = (id: string) => Promise<void>;
+
+export interface UseNotebookService {
+  notes: NoteModel[];
+  update: UpdateFunction;
+  create: CreateFunction;
+  remove: RemoveFunction;
 }

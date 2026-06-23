@@ -2,11 +2,13 @@ import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ChartBlock } from "./ChartBlock/ChartBlock";
+import { ExploreBlock } from "./ExploreBlock/ExploreBlock";
 import { SlashCommand } from "./SlashCommand/SlashCommand";
 import { StaticToolbar } from "./StaticToolbar";
+import { YoutubeShortBlock } from "./YoutubeShortBlock/YoutubeShortBlock";
 import "./editor.scss";
 
-const extensions = [StarterKit, TextStyleKit, SlashCommand, ChartBlock];
+const extensions = [StarterKit, TextStyleKit, SlashCommand, ChartBlock, YoutubeShortBlock, ExploreBlock];
 
 type EditorProps = {
   content?: string;

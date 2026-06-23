@@ -1,19 +1,23 @@
 import React from "react";
-import type { IDocument } from "../Notebook";
-import "./sidebar.scss";
 import clsx from "clsx";
+import type { NoteModel } from "@src/server/model/note.model";
+import "./sidebar.scss";
 
 export const Sidebar = ({
   documents,
   onDocumentClick,
 }: {
-  documents: IDocument[];
-  onDocumentClick: (doc: IDocument) => void;
+  documents: NoteModel[];
+  onDocumentClick: (doc: NoteModel) => void;
 }) => {
   const [expanded, setExpanded] = React.useState(true);
 
   return (
-    <div className={clsx("sidebar flex flex-col pb-6", { "sidebar--collapsed": !expanded })}>
+    <div
+      className={clsx("sidebar flex flex-col pb-6", {
+        "sidebar--collapsed": !expanded,
+      })}
+    >
       <ul className="sidebar__list text-start px-1 py-2 flex-1">
         {documents.map((doc, index) => (
           <li key={index}>
@@ -40,7 +44,11 @@ export const Sidebar = ({
             stroke="currentColor"
             className="w-4 h-4"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
           </svg>
         </button>
       </div>

@@ -1,29 +1,32 @@
 import { nanoid } from "nanoid";
 import { useLocalStorage } from "@hooks/useLocalStorage";
-import type { IDocument } from "@panels/Notebook";
-import type { IUseNotebookService } from "../UseNotebookService";
+import type { UseNotebookService } from "../UseNotebookService";
+import type { NoteModel } from "@src/server/model/note.model";
 
-export const useLocalStorageNotebook = (): IUseNotebookService => {
+export const useLocalStorageNotebook = (): UseNotebookService => {
   const key = "notebook-documents" as const;
-  const [storedDocuments, setDocuments] = useLocalStorage<IDocument[]>(key, []);
+  const [storedNotes, setNotes] = useLocalStorage<NoteModel[]>(key, []);
 
-  const update = async (id: string, document: Omit<IDocument, "id">): Promise<void> => {
-    setDocuments((docs) => {
-      return docs.map((doc) => (doc.id === id ? { ...doc, ...document } : doc));
+  const update = async (
+    id: string,
+    note: Omit<NoteModel, "id">,
+  ): Promise<void> => {
+    setNotes((docs) => {
+      return docs.map((doc) => (doc.id === id ? { ...doc, ...note } : doc));
     });
   };
 
-  const create = async (document: Omit<IDocument, "id">): Promise<void> => {
-    const newDocument: IDocument = { id: nanoid(), ...document };
-    setDocuments((docs) => [...docs, newDocument]);
+  const create = async (note: Omit<NoteModel, "id">): Promise<void> => {
+    const newNote: NoteModel = { id: nanoid(), ...note };
+    setNotes((docs) => [...docs, newNote]);
   };
 
   const remove = async (id: string): Promise<void> => {
-    setDocuments((docs) => docs.filter((doc) => doc.id !== id));
+    setNotes((docs) => docs.filter((doc) => doc.id !== id));
   };
 
   return {
-    documents: storedDocuments,
+    notes: storedNotes,
     update,
     create,
     remove,

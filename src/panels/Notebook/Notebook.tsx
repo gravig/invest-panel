@@ -2,14 +2,9 @@ import React, { type ComponentType } from "react";
 import { Editor } from "@components/Editor";
 import { Button } from "@components/Button";
 import { Panel, type IRenderable } from "@src/PanelRegistry";
-import { useLocalStorageNotebook } from "@src/services/notebook/useLocalStorageNotebook";
+import type { NoteModel } from "@src/server/model/note.model";
 import { Sidebar } from "./Sidebar";
-
-export type IDocument = {
-  id: string;
-  title: string;
-  content: string;
-};
+import { useNotebookService } from "@src/services/notebook/NotebookServiceProvider";
 
 @Panel({
   id: "notebook",
@@ -19,26 +14,32 @@ export type IDocument = {
 })
 export class Notebook implements IRenderable {
   component: ComponentType<any> = () => {
-    const [document, setDocument] = React.useState<IDocument | null>(null);
+    const [note, setNote] = React.useState<NoteModel | null>(null);
     const services = {
-      notebook: useLocalStorageNotebook(),
-    };
-    const handleIDocumentClick = (doc: IDocument): void => {
-      setDocument(doc);
+      notebook: useNotebookService(),
     };
 
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-      setDocument((doc) => (doc ? { ...doc, title: event.target.value } : doc));
+    const handleIDocumentClick = (doc: NoteModel): void => {
+      setNote(doc);
+    };
+
+    const handleTitleChange = (
+      event: React.ChangeEvent<HTMLInputElement>,
+    ): void => {
+      setNote((doc) => (doc ? { ...doc, title: event.target.value } : doc));
     };
 
     const handleSave = (): void => {
-      if (!document) return;
+      if (!note) return;
 
-      services.notebook.update(document.id, { title: document.title, content: document.content });
+      services.notebook.update(note.id, {
+        title: note.title,
+        content: note.content,
+      });
     };
 
     const handleChange = (content: string): void => {
-      setDocument((doc) => (doc ? { ...doc, content } : doc));
+      setNote((doc) => (doc ? { ...doc, content } : doc));
     };
 
     const handleCreate = (): void => {
@@ -46,16 +47,17 @@ export class Notebook implements IRenderable {
     };
 
     const handleRemove = (): void => {
-      if (!document) return;
+      if (!note) return;
 
-      services.notebook.remove(document.id);
-      setDocument(null);
+      services.notebook.remove(note.id);
+      setNote(null);
     };
 
     const handleExport = (): void => {
-      const documents = services.notebook.documents;
+      const documents = services.notebook.notes;
       const dataStr =
-        "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(documents));
+        "data:text/json;charset=utf-8," +
+        encodeURIComponent(JSON.stringify(documents));
       const downloadAnchorNode = window.document.createElement("a");
       downloadAnchorNode.setAttribute("href", dataStr);
       downloadAnchorNode.setAttribute("download", "notebook.json");
@@ -66,13 +68,16 @@ export class Notebook implements IRenderable {
 
     return (
       <div className="flex flex-row flex-1 h-full overflow-x-hidden">
-        <Sidebar documents={services.notebook.documents} onDocumentClick={handleIDocumentClick} />
+        <Sidebar
+          documents={services.notebook.notes}
+          onDocumentClick={handleIDocumentClick}
+        />
 
         <div className="flex flex-1 p-4 flex-col text-start gap-4">
           <div className="flex flex-row items-center gap-6 justify-between">
             <input
               placeholder="Title"
-              value={document?.title || ""}
+              value={note?.title || ""}
               onChange={handleTitleChange}
               className="p-2 flex-1 border rounded border-gray-300"
             />
@@ -80,12 +85,17 @@ export class Notebook implements IRenderable {
               <Button onClick={handleSave}>Save</Button>
               <Button onClick={handleCreate}>New</Button>
               <Button onClick={handleExport}>Export</Button>
-              <Button disabled={!document} onClick={handleRemove}>
+              <Button disabled={!note} onClick={handleRemove}>
                 Remove
               </Button>
             </div>
           </div>
-          <Editor key={document?.id} content={document?.content} onChange={handleChange} />
+
+          <Editor
+            key={note?.id}
+            content={note?.content}
+            onChange={handleChange}
+          />
         </div>
       </div>
     );
