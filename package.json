@@ -11,7 +11,8 @@
     "news:embed": "tsx src/server/scripts/generateNewsEmbeddings.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "http-server dist -p 4173"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
@@ -33,6 +34,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "flexlayout-react": "^0.9.1",
+    "http-server": "^14.1.1",
     "js-tiktoken": "^1.0.21",
     "knex": "^3.2.10",
     "langchain": "^1.5.0",
