@@ -1,4 +1,12 @@
 services:
+  web:
+    build: .
+    container_name: invest-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+
   postgres:
     image: pgvector/pgvector:pg15
     container_name: invest-postgres

@@ -14,6 +14,7 @@ dist-ssr
 .env
 venv
 data
+.ipynb_checkpoints
 
 # Editor directories and files
 .vscode/*
