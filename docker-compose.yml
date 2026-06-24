@@ -7,6 +7,19 @@ services:
     volumes:
       - ./dist:/usr/share/nginx/html:ro
 
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: invest-server
+    env_file: .env
+    environment:
+      POSTGRES_HOST: postgres
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
   postgres:
     build: ./docker/postgres
     container_name: invest-postgres

@@ -1,0 +1,23 @@
+FROM node:22-slim
+
+# yt-dlp-exec's postinstall script requires a `python` binary on PATH.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 \
+  && ln -s /usr/bin/python3 /usr/bin/python \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Skip puppeteer's Chromium download: it's a transitive dependency not used
+# by the Express server itself, and downloading it needlessly bloats the image.
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY tsconfig*.json ./
+COPY src ./src
+
+EXPOSE 3000
+
+CMD ["npx", "tsx", "src/server/main.ts"]

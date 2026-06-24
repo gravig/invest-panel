@@ -1,7 +1,7 @@
 FROM postgres:15 AS pgvector-builder
 
 ARG PG_VERSION=15.18
-ARG PGVECTOR_VERSION=v0.8.0
+ARG PGVECTOR_VERSION=v0.8.3
 
 # PGDG (apt.postgresql.org) and Debian's own repos don't ship
 # postgresql-server-dev-15 for every architecture (e.g. armhf has no
